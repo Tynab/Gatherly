@@ -42,10 +42,7 @@ internal class AcceptInvitationCommandHandler(
             return Value;
         }
 
-        var expired = gathering.Type is WithFixedNumberOfAttendees
-            && gathering.NumberOfAttendees < gathering.MaximumNumberOfAttendees
-            || gathering.Type is WithExpirationForInvitations
-            && gathering.InvitationsExpireAtUtc < UtcNow;
+        var expired = gathering.Type is WithFixedNumberOfAttendees && gathering.NumberOfAttendees < gathering.MaximumNumberOfAttendees || gathering.Type is WithExpirationForInvitations && gathering.InvitationsExpireAtUtc < UtcNow;
 
         if (expired)
         {
