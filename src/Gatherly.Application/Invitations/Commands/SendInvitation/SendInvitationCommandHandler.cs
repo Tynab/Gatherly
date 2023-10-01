@@ -1,11 +1,7 @@
 ﻿using Gatherly.Application.Abstractions;
-using Gatherly.Domain.Entities;
 using Gatherly.Domain.Repositories;
 using MediatR;
-using static Gatherly.Domain.Entities.InvitationStatus;
 using static MediatR.Unit;
-using static System.DateTime;
-using static System.Guid;
 
 namespace Gatherly.Application.Invitations.Commands.SendInvitation;
 
@@ -33,26 +29,8 @@ internal sealed class SendInvitationCommandHandler(
             return Value;
         }
 
-        if (gathering.Creator?.Id == member.Id)
-        {
-            throw new Exception("Can't send invitation to the gathering creator.");
-        }
+        var invitation = gathering.SendInvitation(member);
 
-        if (gathering.ScheduledAtUtc < UtcNow)
-        {
-            throw new Exception("Can't send invitation for gathering in the past.");
-        }
-
-        var invitation = new Invitation
-        {
-            Id = NewGuid(),
-            MemberId = member.Id,
-            GatheringId = gathering.Id,
-            Status = Pending,
-            CreatedOnUtc = UtcNow
-        };
-
-        gathering.Invitations?.Add(invitation);
         _invitationRepository.Add(invitation);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         await _emailService.SendInvitationSentEmailAsync(member, gathering, cancellationToken);

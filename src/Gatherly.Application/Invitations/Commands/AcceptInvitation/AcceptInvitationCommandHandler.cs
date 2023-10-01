@@ -1,11 +1,8 @@
 ﻿using Gatherly.Application.Abstractions;
-using Gatherly.Domain.Entities;
 using Gatherly.Domain.Repositories;
 using MediatR;
-using static Gatherly.Domain.Entities.GatheringType;
 using static Gatherly.Domain.Entities.InvitationStatus;
 using static MediatR.Unit;
-using static System.DateTime;
 
 namespace Gatherly.Application.Invitations.Commands.AcceptInvitation;
 
@@ -42,32 +39,13 @@ internal class AcceptInvitationCommandHandler(
             return Value;
         }
 
-        var expired = gathering.Type is WithFixedNumberOfAttendees
-            && gathering.NumberOfAttendees < gathering.MaximumNumberOfAttendees
-            || gathering.Type is WithExpirationForInvitations
-            && gathering.InvitationsExpireAtUtc < UtcNow;
+        var attendee = gathering.AcceptInvitation(invitation);
 
-        if (expired)
+        if (attendee is not null)
         {
-            invitation.Status = Expired;
-            invitation.ModifiedOnUtc = UtcNow;
-        }
-        else
-        {
-            invitation.Status = Accepted;
-            invitation.ModifiedOnUtc = UtcNow;
+            _attendeeRepository.Add(attendee);
         }
 
-        var attendee = new Attendee
-        {
-            MemberId = invitation.MemberId,
-            GatheringId = invitation.GatheringId,
-            CreatedOnUtc = UtcNow
-        };
-
-        gathering.Attendees?.Add(attendee);
-        gathering.NumberOfAttendees++;
-        _attendeeRepository.Add(attendee);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         if (invitation.Status is Accepted)
