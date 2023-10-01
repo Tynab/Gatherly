@@ -1,8 +1,10 @@
-﻿namespace Gatherly.Domain.Entities;
+﻿using static System.DateTime;
 
-public sealed class Attendee
+namespace Gatherly.Domain.Entities;
+
+public sealed class Attendee(Invitation invitation)
 {
-    public Guid GatheringId { get; set; }
-    public Guid MemberId { get; set; }
-    public DateTime CreatedOnUtc { get; set; }
+    public Guid GatheringId { get; private set; } = invitation.GatheringId;
+    public Guid MemberId { get; private set; } = invitation.MemberId;
+    public DateTime CreatedOnUtc { get; private set; } = UtcNow;
 }

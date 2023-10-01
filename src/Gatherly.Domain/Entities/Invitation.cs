@@ -1,11 +1,30 @@
-﻿namespace Gatherly.Domain.Entities;
+﻿using static Gatherly.Domain.Entities.InvitationStatus;
+using static System.DateTime;
 
-public sealed class Invitation
+namespace Gatherly.Domain.Entities;
+
+public sealed class Invitation(Guid id, Member member, Gathering gathering)
 {
-    public Guid Id { get; set; }
-    public Guid GatheringId { get; set; }
-    public Guid MemberId { get; set; }
-    public InvitationStatus Status { get; set; }
-    public DateTime CreatedOnUtc { get; set; }
-    public DateTime? ModifiedOnUtc { get; set; }
+    public Guid Id { get; private set; } = id;
+    public Guid GatheringId { get; private set; } = gathering.Id;
+    public Guid MemberId { get; private set; } = member.Id;
+    public InvitationStatus Status { get; private set; } = Pending;
+    public DateTime CreatedOnUtc { get; private set; } = UtcNow;
+    public DateTime? ModifiedOnUtc { get; private set; }
+
+    internal void Expire()
+    {
+        Status = Expired;
+        ModifiedOnUtc = UtcNow;
+    }
+
+    internal Attendee Accept()
+    {
+        Status = Accepted;
+        ModifiedOnUtc = UtcNow;
+
+        var attendee = new Attendee(this);
+
+        return attendee;
+    }
 }
