@@ -24,7 +24,7 @@ internal class CreateGatheringCommandHandler(
             return Value;
         }
 
-        var gathering = Create(member, request.Type, request.ScheduledAtUtc, request.Name, request.Location, request.MaximumNumberOfAttendees, request.InvitationsValidBeforeInHours);
+        var gathering = Create(member, request.Type, request.ScheduledAtUtc, request.Name, request.Location!, request.MaximumNumberOfAttendees, request.InvitationsValidBeforeInHours);
 
         _gatheringRepository.Add(gathering);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
