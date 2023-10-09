@@ -1,4 +1,4 @@
-﻿namespace Gatherly.Domain.Entities;
+﻿namespace Gatherly.Domain.Enums;
 
 public enum GatheringType
 {
