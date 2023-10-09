@@ -1,5 +1,6 @@
-﻿using Gatherly.Domain.Primitives;
-using static Gatherly.Domain.Entities.InvitationStatus;
+﻿using Gatherly.Domain.Enums;
+using Gatherly.Domain.Primitives;
+using static Gatherly.Domain.Enums.InvitationStatus;
 using static System.DateTime;
 
 namespace Gatherly.Domain.Entities;

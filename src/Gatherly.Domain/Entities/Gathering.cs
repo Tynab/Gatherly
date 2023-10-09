@@ -1,5 +1,6 @@
-﻿using Gatherly.Domain.Primitives;
-using static Gatherly.Domain.Entities.GatheringType;
+﻿using Gatherly.Domain.Enums;
+using Gatherly.Domain.Primitives;
+using static Gatherly.Domain.Enums.GatheringType;
 using static System.DateTime;
 using static System.Guid;
 

@@ -1,7 +1,7 @@
 ﻿using Gatherly.Application.Abstractions;
 using Gatherly.Domain.Repositories;
 using MediatR;
-using static Gatherly.Domain.Entities.InvitationStatus;
+using static Gatherly.Domain.Enums.InvitationStatus;
 using static MediatR.Unit;
 
 namespace Gatherly.Application.Invitations.Commands.AcceptInvitation;
