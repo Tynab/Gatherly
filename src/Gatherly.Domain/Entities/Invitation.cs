@@ -1,11 +1,11 @@
-﻿using static Gatherly.Domain.Entities.InvitationStatus;
+﻿using Gatherly.Domain.Primitives;
+using static Gatherly.Domain.Entities.InvitationStatus;
 using static System.DateTime;
 
 namespace Gatherly.Domain.Entities;
 
-public sealed class Invitation(Guid id, Member member, Gathering gathering)
+public sealed class Invitation(Guid id, Member member, Gathering gathering) : Entity(id)
 {
-    public Guid Id { get; private set; } = id;
     public Guid GatheringId { get; private set; } = gathering.Id;
     public Guid MemberId { get; private set; } = member.Id;
     public InvitationStatus Status { get; private set; } = Pending;

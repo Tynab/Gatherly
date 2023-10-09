@@ -1,15 +1,15 @@
-﻿using static Gatherly.Domain.Entities.GatheringType;
+﻿using Gatherly.Domain.Primitives;
+using static Gatherly.Domain.Entities.GatheringType;
 using static System.DateTime;
 using static System.Guid;
 
 namespace Gatherly.Domain.Entities;
 
-public sealed class Gathering(Guid id, Member creator, GatheringType type, DateTime scheduledAtUtc, string name, string location)
+public sealed class Gathering(Guid id, Member creator, GatheringType type, DateTime scheduledAtUtc, string name, string location) : Entity(id)
 {
     private readonly List<Invitation> _invitations = new();
     private readonly List<Attendee> _attendees = new();
 
-    public Guid Id { get; private set; } = id;
     public Member? Creator { get; private set; } = creator;
     public GatheringType Type { get; private set; } = type;
     public string? Name { get; private set; } = name;
